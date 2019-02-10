@@ -41,11 +41,11 @@ class TempThread(threading.Thread,client):
                 # insert name of function that reads data from sensor
             elif average_temp >= 38:
                 # insert code for app alerts
-                client.publish("Team28/TempHigh", "High Temperature! Risk of fever! ", str(datetime.now()), sep="\n"))
+                client.publish("Team28/TempHigh", ("High Temperature! Risk of fever! " + "\n" + str(datetime.now())))
                 # insert name of function that reads data from sensor
-                else:
+            else:
                 # insert code for app alerts
-                client.publish("Team28/TempLow", "Low Temperature! Risk of fever! ", str(datetime.now()), sep="\n"))
+                client.publish("Team28/TempLow", ("Low Temperature! Risk of fever! " + "\n" + str(datetime.now())))
                 # insert name of function that reads data from sensor
             out_file.close()
             with open("TempOutput.txt","r") as temp_file:
@@ -67,7 +67,7 @@ class HRThread(threading.Thread,client):
             client.publish("Team28/HRValue", value)
             self.q.put_nowait(value)
             if value > average_bpm + 20 or value < average_bpm - 20:
-                client.publish("Team28/HRWarning","Abnormal HeartRate Detected ", str(datetime.now()), sep="\n"))
+                client.publish("Team28/HRWarning",("Abnormal HeartRate Detected " + "\n" + str(datetime.now())))
             out_file.close()
             with open("HROutput.txt","r") as hr_file:
                 client.publish("Team28/HROutFile", hr_file.read())
@@ -77,7 +77,7 @@ class HRThread(threading.Thread,client):
             client.publish("Team28/SPO2Value", value)
             self.q.put_nowait(value)
             if value < 90:
-                client.publish("Team28/SPO2Warning",("Abnormal SPO2 Levels Detected ", str(datetime.now()), sep="\n"))
+                client.publish("Team28/SPO2Warning",("Abnormal SPO2 Levels Detected " + "\n" + str(datetime.now())))
             out_file.close()
             with open("SPO2Output.txt","r") as spo2_file:
                 client.publish("Team28/SPO2OutFile", spo2_file.read())
@@ -88,6 +88,6 @@ b = IMUThread()
 a.start()
 b.start()
 while True: pass
-    
+'''
     
     

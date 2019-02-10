@@ -1,10 +1,54 @@
 
-
+import 'package:mqtt_client/mqtt_client.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_words/english_words.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:convert' show utf8;
 
-void main() => runApp(MyApp());
+
+final MqttClient client = MqttClient('130.113.129.17', '');
+Future<void> main() async {
+  client.logging(on: false);
+  client.onConnected = onConnected;
+  final MqttConnectMessage connMess = MqttConnectMessage()
+      .withClientIdentifier('Mqtt_MyClientUniqueId')
+      .keepAliveFor(20) // Must agree with the keep alive set above or not set
+      .startClean() // Non persistent session for testing
+      .withWillQos(MqttQos.atLeastOnce);
+  print('EXAMPLE::Mosquitto client connecting....');
+  client.connectionMessage = connMess;
+  try {
+    await client.connect();
+  } on Exception catch (e) {
+    print('EXAMPLE::client exception - $e');
+    client.disconnect();
+  }
+  runApp(MyApp());
+}
+
+void onConnected(){
+  const String topic1 = 'Team28/TempValue'; // Not a wildcard topic
+  client.subscribe(topic1, MqttQos.atMostOnce);
+  const String topic2 = 'Team28/TempHigh'; // Not a wildcard topic
+  client.subscribe(topic2, MqttQos.atMostOnce);
+  const String topic3 = 'Team28/TempLow'; // Not a wildcard topic
+  client.subscribe(topic3, MqttQos.atMostOnce);
+  const String topic4 = 'Team28/TempOutFile'; // Not a wildcard topic
+  client.subscribe(topic4, MqttQos.atMostOnce);
+  const String topic5 = 'Team28/HRValue'; // Not a wildcard topic
+  client.subscribe(topic5, MqttQos.atMostOnce);
+  const String topic6 = 'Team28/HRWarning'; // Not a wildcard topic
+  client.subscribe(topic6, MqttQos.atMostOnce);
+  const String topic7 = 'Team28/HROutFile'; // Not a wildcard topic
+  client.subscribe(topic7, MqttQos.atMostOnce);
+  const String topic8 = 'Team28/SPO2Value'; // Not a wildcard topic
+  client.subscribe(topic8, MqttQos.atMostOnce);
+  const String topic9 = 'Team28/SPO2Warning'; // Not a wildcard topic
+  client.subscribe(topic9, MqttQos.atMostOnce);
+  const String topic10 = 'Team28/SPO2OutFile'; // Not a wildcard topic
+  client.subscribe(topic10, MqttQos.atMostOnce);
+}
 
 // #docregion MyApp
 class MyApp extends StatelessWidget {
@@ -28,6 +72,16 @@ class RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final _saved = new Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  String _msg = "";
+  String _msg2 = "";
+  String _msg3 = "";
+  String _msg4 = "";
+  String _msg5 = "";
+  String _msg6 = "";
+  String _msg7 = "";
+  String _msg8 = "";
+  String _msg9 = "";
+  String _msg10 = "";
   // #enddocregion RWS-var
 
   // #docregion _buildSuggestions
@@ -76,7 +130,7 @@ class RandomWordsState extends State<RandomWords> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Startup Name Generator YUHH'),
+        title: Text(_msg),
         actions: <Widget>[      // Add 3 lines from here...
           new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
         ],
@@ -108,13 +162,72 @@ class RandomWordsState extends State<RandomWords> {
 
           return new Scaffold(         // Add 6 lines from here...
             appBar: new AppBar(
-              title: const Text('Saved Suggestions'),
+              title: Text(_msg2),
             ),
             body: new ListView(children: divided),
           );
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    client.updates.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+      final MqttPublishMessage recMess = c[0].payload;
+      final String pt =
+      MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+
+      this.setState(() {
+        switch(c[0].topic){
+          case 'Team28/TempValue': {
+            _msg = pt;
+            break;
+          }
+          case 'Team28/TempHigh' : {
+            _msg2 = pt;
+            break;
+          }
+          case 'Team28/TempLow' : {
+            _msg3 = pt;
+            break;
+          }
+          case 'Team28/TempOutFile' : {
+            _msg4 = pt;
+            break;
+          }
+          case 'Team28/HRValue' : {
+            _msg5 = pt;
+            break;
+          }
+          case 'Team28/HRWarning' : {
+            _msg6 = pt;
+            break;
+          }
+          case 'Team28/HROutFile' : {
+            _msg7 = pt;
+            break;
+          }
+          case 'Team28/SPO2Value' : {
+            _msg8 = pt;
+            break;
+          }
+          case 'Team28/SPO2Warning' : {
+            _msg9 = pt;
+            break;
+          }
+          case 'Team28/SPO2OutFile' : {
+            _msg10 = pt;
+            break;
+          }
+
+          default: {
+            break;
+          }
+        }
+      });
+    });
   }
 // #enddocregion RWS-build
 // #docregion RWS-var
