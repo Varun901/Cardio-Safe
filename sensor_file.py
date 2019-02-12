@@ -2,7 +2,7 @@
 ##Heartrate / SPO2 w Code: Mithil
 
 import PCF8591 as ADC
-import RPi.GPI0 as GPI0
+import RPi.GPIO as GPIO
 import time
 import math
 from MPU6050 import MPU6050
@@ -31,6 +31,8 @@ class TempThread(threading.Thread,client):
                 temp = 1 / (((math.log(Rt / 10000)) / 3950) + (1 / (273.15 + 25)))
                 temp = temp - 273.15
                 mean_value.append(temp)
+                if len(mean_value) > 20:
+                    mean_value.remove(mean_value[0])
                 sleep(0.1)
             average_temp = sum(mean_value)/len(mean_value)
             client.publish("Team28/TempValue", average_temp) 
