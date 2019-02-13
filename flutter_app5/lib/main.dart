@@ -66,7 +66,8 @@ class MyApp extends StatelessWidget {
 class SensorInfoState extends State<SensorInfo> {
   final _suggestions = <WordPair>[];
   final _saved = new Set<WordPair>();
-  final _biggerFont = const TextStyle(fontSize: 34.0);
+  final _biggerFont = const TextStyle(fontSize: 36.0);
+  final _smallerFont = const TextStyle(fontSize: 24.0);
   String _msg = "";
   String _msg2 = "";
   String _msg3 = "";
@@ -231,7 +232,7 @@ class SensorInfoState extends State<SensorInfo> {
         actions: <Widget>[ // Add 3 lines from here...
 //            new IconButton(icon: const Icon(Icons.list)),
 //          new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
-          new IconButton(icon: const Icon(Icons.list)),
+//          new IconButton(icon: const Icon(Icons.list)),
         ],
       ),
       body: _buildSuggestions(),
@@ -244,13 +245,17 @@ class SensorInfoState extends State<SensorInfo> {
               padding: EdgeInsets.zero,
               children: <Widget>[
                 DrawerHeader(
-                  child: Text('Drawer Header'),
+                  child: Text('Cardio-Safe',
+                    style: _smallerFont,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.blue,
                   ),
                 ),
                 ListTile(
-                  title: Text('Item 1'),
+                  title: Text('Home',
+                    style: _smallerFont,
+                  ),
                   onTap: () {
                     // Update the state of the app
                     // ...
