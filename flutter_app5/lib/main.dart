@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Cardio-Safe',
       theme: new ThemeData(          // Add the 3 lines from here...
-        primaryColor: Colors.white,
+        primaryColor: Colors.red,
       ),
       home: SensorInfo(),
     );
@@ -249,7 +249,7 @@ class SensorInfoState extends State<SensorInfo> {
                     style: _smallerFont,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.red,
                   ),
                 ),
                 ListTile(
