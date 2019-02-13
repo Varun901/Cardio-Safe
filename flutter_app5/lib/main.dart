@@ -1,11 +1,6 @@
-
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_words/english_words.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'dart:convert' show utf8;
-
 
 final MqttClient client = MqttClient('130.113.129.17', '');
 Future<void> main() async {
@@ -87,106 +82,106 @@ class SensorInfoState extends State<SensorInfo> {
   // #docregion _buildSuggestions
   Widget _buildSuggestions() {
     return new SingleChildScrollView(
-      child:Column(children: <Widget>[
-        new Text("Welcome to Cardio-Safe",
-          style: _biggerFont,
-        ),
+        child:Column(children: <Widget>[
+          new Text("Welcome to Cardio-Safe",
+            style: _biggerFont,
+          ),
 
-        GridView.count(
-          primary: false,
-          crossAxisCount: 3,
-          childAspectRatio: 1.6,
-          mainAxisSpacing: 1.0,
-          crossAxisSpacing: 1.0,
-          children: <Widget>[
-            new GridTile(child: new Card(
+          GridView.count(
+            primary: false,
+            crossAxisCount: 3,
+            childAspectRatio: 1.6,
+            mainAxisSpacing: 1.0,
+            crossAxisSpacing: 1.0,
+            children: <Widget>[
+              new GridTile(child: new Card(
                 color: Colors.blue.shade200,
                 child: new Center(
                   child: new Text("Sensor"),
                 ),
                 margin: EdgeInsets.all(0.0),
-            ),) ,
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text("Reading"),
-                ),
-                margin: EdgeInsets.all(0.0)
-            ),) ,
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text("Warning"),
-                ),
-                margin: EdgeInsets.all(0.0)
-            ),) ,
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text("Temperature Sensor"),
-                ),
-                margin: EdgeInsets.all(0.0)
-            ),) ,
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text(_msg),
-                ),
-                margin: EdgeInsets.all(0.0)
-            ),),
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text(_msg),
-                ),
-              margin: EdgeInsets.all(0.0)
-            ),),
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text("Heart Rate Sensor"),
-                ),
-                margin: EdgeInsets.all(0.0)
-            ),),
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text(_msg5),
-                ),
-                margin: EdgeInsets.all(0.0)
-            ),),
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text(_msg5),
-                ),
-                margin: EdgeInsets.all(0.0)
-            ),),
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text("SPO2 Sensor"),
-                ),
-                margin: EdgeInsets.all(0.0)
-            ),),
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text(_msg8),
-                ),
-                margin: EdgeInsets.all(0.0)
-            ),),
-            new GridTile(child: new Card(
-                color: Colors.blue.shade200,
-                child: new Center(
-                  child: new Text(_msg5),
-                ),
-                margin: EdgeInsets.all(0.0)
-            ),)
-          ], //new Cards()
-          shrinkWrap: true,
-        )
-      ],)
+              ),) ,
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text("Reading"),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),) ,
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text("Warning"),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),) ,
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text("Temperature Sensor"),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),) ,
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text(_msg),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),),
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text(_msg),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),),
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text("Heart Rate Sensor"),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),),
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text(_msg5),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),),
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text(_msg5),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),),
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text("SPO2 Sensor"),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),),
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text(_msg8),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),),
+              new GridTile(child: new Card(
+                  color: Colors.blue.shade200,
+                  child: new Center(
+                    child: new Text(_msg5),
+                  ),
+                  margin: EdgeInsets.all(0.0)
+              ),)
+            ], //new Cards()
+            shrinkWrap: true,
+          )
+        ],)
     );
 //      ListView.builder(
 //        padding: const EdgeInsets.all(16.0),
@@ -231,83 +226,84 @@ class SensorInfoState extends State<SensorInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("CardioSafe"),
-          actions: <Widget>[ // Add 3 lines from here...
+      appBar: AppBar(
+        title: Text("CardioSafe"),
+        actions: <Widget>[ // Add 3 lines from here...
 //            new IconButton(icon: const Icon(Icons.list)),
-            new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
-          ],
-        ),
-        body: _buildSuggestions(),
-//        drawer: Drawer(
-//          // Add a ListView to the drawer. This ensures the user can scroll
-//          // through the options in the Drawer if there isn't enough vertical
-//          // space to fit everything.
-//            child: ListView(
-//              // Important: Remove any padding from the ListView.
-//              padding: EdgeInsets.zero,
-//              children: <Widget>[
-//                DrawerHeader(
-//                  child: Text('Drawer Header'),
-//                  decoration: BoxDecoration(
-//                    color: Colors.blue,
-//                  ),
-//                ),
-//                ListTile(
-//                  title: Text('Item 1'),
-//                  onTap: () {
-//                    // Update the state of the app
-//                    // ...
-//                    // Then close the drawer
-//                    Navigator.pop(context);
-//                  },
-//                ),
-//                ListTile(
-//                  title: Text('Item 2'),
-//                  onTap: () {
-//                    // Update the state of the app
-//                    // ...
-//                    // Then close the drawer
-//                    Navigator.pop(context);
-//                  },
-//                ),
-//              ],
-//            )
-//        )
-    );
-  }
-
-  void _pushSaved() {
-    Navigator.of(context).push(
-      new MaterialPageRoute<void>(   // Add 20 lines from here...
-        builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = _saved.map(
-                (WordPair pair) {
-              return new ListTile(
-                title: new Text(
-                  pair.asPascalCase,
-                  style: _biggerFont,
-                ),
-              );
-            },
-          );
-          final List<Widget> divided = ListTile
-              .divideTiles(
-            context: context,
-            tiles: tiles,
-          )
-              .toList();
-
-          return new Scaffold(         // Add 6 lines from here...
-            appBar: new AppBar(
-              title: Text(_msg2),
-            ),
-            body: new ListView(children: divided),
-          );
-        },
+//          new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
+          new IconButton(icon: const Icon(Icons.list)),
+        ],
       ),
+      body: _buildSuggestions(),
+        drawer: Drawer(
+          // Add a ListView to the drawer. This ensures the user can scroll
+          // through the options in the Drawer if there isn't enough vertical
+          // space to fit everything.
+            child: ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                  child: Text('Drawer Header'),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                ),
+                ListTile(
+                  title: Text('Item 1'),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('Item 2'),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            )
+        )
     );
   }
+
+//  void _pushSaved() {
+//    Navigator.of(context).push(
+//      new MaterialPageRoute<void>(   // Add 20 lines from here...
+//        builder: (BuildContext context) {
+//          final Iterable<ListTile> tiles = _saved.map(
+//                (WordPair pair) {
+//              return new ListTile(
+//                title: new Text(
+//                  pair.asPascalCase,
+//                  style: _biggerFont,
+//                ),
+//              );
+//            },
+//          );
+//          final List<Widget> divided = ListTile
+//              .divideTiles(
+//            context: context,
+//            tiles: tiles,
+//          )
+//              .toList();
+//
+//          return new Scaffold(         // Add 6 lines from here...
+//            appBar: new AppBar(
+//              title: Text(_msg2),
+//            ),
+//            body: new ListView(children: divided),
+//          );
+//        },
+//      ),
+//    );
+//  }
 
   @override
   void initState() {

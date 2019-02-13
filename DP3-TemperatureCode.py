@@ -29,10 +29,14 @@ class TempThread(threading.Thread):
                 temp = 1 / (((math.log(Rt / 10000)) / 3950) + (1 / (273.15 + 25)))
                 temp = temp - 273.15
                 mean_value.append(temp)
+                if len(mean_value) > 20:
+                    mean_value.remove(mean_value[0])
                 sleep(0.1)
-            mean = sum(mean_value)/len(mean_value)
-            out_file.write(str(mean) + "\n")
-            self.q.put_nowait(mean)
+            average_temp = sum(mean_value) / len(mean_value)
+            print(average_temp)
+            out_file.write(str(average_temp) + "\n")
+            sleep(0.1)
+            self.q.put_nowait(average_temp)
             if 36.1 <= average_temp <= 37.2:
                 time.sleep(10)
                 # insert name of function that reads data from sensor
