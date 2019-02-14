@@ -2,16 +2,21 @@
 ##Heartrate / SPO2 w Code: Mithil
 
 import PCF8591 as ADC
+import threading
 import RPi.GPIO as GPIO
 import time
 import math
 from MPU6050 import MPU6050
+from max30100 import MAX30100
 from time import sleep
 from queue import Queue
+import paho.mqtt.client as mqtt
 from datetime import datetime
 
 #class temp _user(object):
    # def __init__(self,
+
+client = mqtt.Client()
 
 class TempThread(threading.Thread,client):
     def __init__(self, queue):
@@ -50,7 +55,7 @@ class TempThread(threading.Thread,client):
                 client.publish("Team28/TempLow", ("Low Temperature! Risk of fever! " + "\n" + str(datetime.now())))
                 # insert name of function that reads data from sensor
             out_file.close()
-            with open("TempOutput.txt","r") as temp_file:
+            with open("TempOutput.txt", "r") as temp_file:
                 client.publish("Team28/TempOutFile", temp_file.read())
 
             
@@ -60,30 +65,36 @@ class HRThread(threading.Thread,client):
         self.client = client
         super().__init__()
     def run(self):
-        hr = max30100()
+        hr = MAX30100()
+        count = 0
         while True:
-            out_file = open('HROutput.txt', "a+")
             hr.update()
+            bpm = hr.get_bpm()
             average_bpm = hr.get_avg_bpm()
-            value = hr.get_bpm()
-            client.publish("Team28/HRValue", value)
-            self.q.put_nowait(value)
-            if value > average_bpm + 20 or value < average_bpm - 20:
-                client.publish("Team28/HRWarning",("Abnormal HeartRate Detected " + "\n" + str(datetime.now())))
-            out_file.close()
-            with open("HROutput.txt","r") as hr_file:
-                client.publish("Team28/HROutFile", hr_file.read())
-            out_file = open('SPO2Output.txt', "a+")
-            hr.update()
-            value = hr.calculate_spo2()
-            client.publish("Team28/SPO2Value", value)
-            self.q.put_nowait(value)
-            if value < 90:
-                client.publish("Team28/SPO2Warning",("Abnormal SPO2 Levels Detected " + "\n" + str(datetime.now())))
-            out_file.close()
-            with open("SPO2Output.txt","r") as spo2_file:
-                client.publish("Team28/SPO2OutFile", spo2_file.read())
-            sleep(0.5)
+            spo2 = hr.calculate_spo2
+            if count % 200 == 0:
+                out_file_hr = open('HROutput.txt', "a+")
+                out_file_spo2 = open('SPO2Output.txt', "a+")
+                if bpm != None:
+                    client.publish("Team28/HRValue", bpm)
+                    self.q.put_nowait(bpm)
+                    out_file_hr.write(bpm)
+                if average_bpm != None and bpm!= None:
+                    if bpm > (average_bpm + 20) or bpm < (average_bpm - 20):
+                        client.publish("Team28/HRWarning",("Abnormal HeartRate Detected " + "\n" + str(datetime.now())))
+                client.publish("Team28/SPO2Value", spo2)
+                self.q.put_nowait(spo2)
+                out_file_spo2.write(spo2)
+                if spo2 < 90:
+                    client.publish("Team28/SPO2Warning",("Abnormal SPO2 Levels Detected " + "\n" + str(datetime.now())))
+                out_file_hr.close()
+                out_file_spo2.close()
+                with open("HROutput.txt", "r") as hr_file:
+                    client.publish("Team28/HROutFile", hr_file.read())
+                with open("SPO2Output.txt", "r") as spo2_file:
+                    client.publish("Team28/SPO2OutFile", spo2_file.read())
+                count += 1
+                sleep(0.01)
 '''
 a = SoundThread()
 b = IMUThread()
