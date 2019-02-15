@@ -1,16 +1,15 @@
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'globals.dart' as globals;
+
 
 final MqttClient client = MqttClient('130.113.129.17', '');
 Future<void> main() async {
-  client.logging(on: false);
+  client.logging(on: true);
   client.onConnected = onConnected;
   final MqttConnectMessage connMess = MqttConnectMessage()
-      .withClientIdentifier('Mqtt_MyClientUniqueId')
-      .keepAliveFor(20) // Must agree with the keep alive set above or not set
-      .startClean() // Non persistent session for testing
-      .withWillQos(MqttQos.atLeastOnce);
+      .withClientIdentifier('Mqtt_MyClientUniqueId');
   print('EXAMPLE::Mosquitto client connecting....');
   client.connectionMessage = connMess;
   try {
@@ -25,7 +24,7 @@ Future<void> main() async {
 void onConnected(){
   const String topic1 = 'Team28/TempValue'; // Not a wildcard topic
   client.subscribe(topic1, MqttQos.atMostOnce);
-  const String topic2 = 'Team28/TempHigh'; // Not a wildcard topic
+  const String topic2 = 'Team28/TempWarning'; // Not a wildcard topic
   client.subscribe(topic2, MqttQos.atMostOnce);
   const String topic3 = 'Team28/TempLow'; // Not a wildcard topic
   client.subscribe(topic3, MqttQos.atMostOnce);
@@ -78,6 +77,7 @@ class SensorInfoState extends State<SensorInfo> {
   String _msg8 = "";
   String _msg9 = "";
   String _msg10 = "";
+//  String _TempWarning = "";
   // #enddocregion RWS-var
 
   // #docregion _buildSuggestions
@@ -133,7 +133,7 @@ class SensorInfoState extends State<SensorInfo> {
               new GridTile(child: new Card(
                   color: Colors.blue.shade200,
                   child: new Center(
-                    child: new Text(_msg),
+                    child: new Text(_msg2),
                   ),
                   margin: EdgeInsets.all(0.0)
               ),),
@@ -154,7 +154,7 @@ class SensorInfoState extends State<SensorInfo> {
               new GridTile(child: new Card(
                   color: Colors.blue.shade200,
                   child: new Center(
-                    child: new Text(_msg5),
+                    child: new Text(_msg6),
                   ),
                   margin: EdgeInsets.all(0.0)
               ),),
@@ -175,7 +175,7 @@ class SensorInfoState extends State<SensorInfo> {
               new GridTile(child: new Card(
                   color: Colors.blue.shade200,
                   child: new Center(
-                    child: new Text(_msg5),
+                    child: new Text(_msg9),
                   ),
                   margin: EdgeInsets.all(0.0)
               ),)
@@ -264,7 +264,9 @@ class SensorInfoState extends State<SensorInfo> {
                   },
                 ),
                 ListTile(
-                  title: Text('Item 2'),
+                  title: Text('Graphs',
+                    style: _smallerFont,
+                  ),
                   onTap: () {
                     // Update the state of the app
                     // ...
@@ -324,7 +326,7 @@ class SensorInfoState extends State<SensorInfo> {
             _msg = pt;
             break;
           }
-          case 'Team28/TempHigh' : {
+          case 'Team28/TempWarning' : {
             _msg2 = pt;
             break;
           }
@@ -360,15 +362,20 @@ class SensorInfoState extends State<SensorInfo> {
             _msg10 = pt;
             break;
           }
-//          if (_msg2 == "" && _msg3 != "") {
-//              var _TempWarning = (_msg3);
-//          } else {
-//            var _TempWarning = _msg2;
-//          }
+
           default: {
             break;
           }
         }
+//        if (_msg2 == "" && _msg3 != "") {
+//          _TempWarning = (_msg3);
+//        }
+//        else if (_msg2 != "" && _msg3 == "") {
+//          _TempWarning = (_msg2);
+//        }
+//        else {
+//          _TempWarning = "";
+//        }
       });
     });
   }

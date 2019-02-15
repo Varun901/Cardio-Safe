@@ -2,7 +2,6 @@ import paho.mqtt.client as mqtt
 from sensor_file import TempThread, HRThread
 from queue import Queue
 
-Client(client_id = "Team28", clean_session = True, userdata = None, protocol = MQTTv311, transport="top")
 client = mqtt.Client("Team28")
 
 client.connect("130.113.129.17")
