@@ -4,6 +4,7 @@
 import PCF8591 as ADC
 import threading
 import RPi.GPIO as GPIO
+from gpiozero import Buzzer
 import time
 import math
 from max30100 import MAX30100
@@ -22,6 +23,7 @@ class TempThread(threading.Thread):
         super().__init__()
     def run(self):
         ADC.setup(0x48)
+        buzz = Buzzer(3)
         while True:
             out_file = open('TempOutput.txt', "a+")
             mean_value = []
@@ -41,14 +43,19 @@ class TempThread(threading.Thread):
             out_file.write(str(average_temp) + "\n")
             self.q.put_nowait(average_temp)
             if 36.1 <= average_temp <= 38:
+                buzz.off()
                 self.client.publish("Team28/TempWarning", (""))
                 time.sleep(10)
                 # insert name of function that reads data from sensor
             elif average_temp > 38:
+                if buzz.is_active == False:
+                    buzz.on()
                 # insert code for app alerts
                 self.client.publish("Team28/TempWarning", ("High Temperature! Risk of fever! " + "\n" + str(datetime.now())))
                 # insert name of function that reads data from sensor
             else:
+                if buzz.is_active == False:
+                    buzz.on()
                 # insert code for app alerts
                 self.client.publish("Team28/TempWarning", ("Low Temperature! Risk of fever! " + "\n" + str(datetime.now())))
                 # insert name of function that reads data from sensor
@@ -64,6 +71,7 @@ class HRThread(threading.Thread):
         super().__init__()
     def run(self):
         hr = MAX30100()
+        buzz = Buzzer(3)
         count = 0
         while True:
             hr.update()
@@ -81,11 +89,21 @@ class HRThread(threading.Thread):
                 if average_bpm != None and bpm!= None:
                     if bpm > (average_bpm + 20) or bpm < (average_bpm - 20):
                         self.client.publish("Team28/HRWarning",("Abnormal HeartRate Detected " + "\n" + str(datetime.now())))
+                        if buzz.is_active == False:
+                            buzz.on()
+                    else:
+                        buzz.off()
+                        self.client.publish("Team28/HRWarning",(""))
                 self.client.publish("Team28/SPO2Value", spo2)
                 self.q.put_nowait(spo2)
                 out_file_spo2.write(str(spo2))
                 if spo2 < 90:
                     self.client.publish("Team28/SPO2Warning",("Abnormal SPO2 Levels Detected " + "\n" + str(datetime.now())))
+                    if buzz.is_active == False:
+                        buzz.on()
+                else:
+                    self.client.publish("Team28/SPO2Warning",(""))
+                    buzz.off()
                 out_file_hr.close()
                 out_file_spo2.close()
                 with open("HROutput.txt", "r") as hr_file:
