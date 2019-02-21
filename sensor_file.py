@@ -23,7 +23,7 @@ class TempThread(threading.Thread):
         super().__init__()
     def run(self):
         ADC.setup(0x48)
-        buzz = Buzzer(3)
+        buzz = Buzzer(17)
         while True:
             out_file = open('TempOutput.txt', "a+")
             mean_value = []
@@ -85,7 +85,7 @@ class HRThread(threading.Thread):
                     self.client.publish("Team28/HRValue", bpm)
                     print(bpm)
                     self.q.put_nowait(bpm)
-                    out_file_hr.write(str(bpm))
+                    out_file_hr.write(str(bpm) + "\n")
                 if average_bpm != None and bpm!= None:
                     if bpm > (average_bpm + 20) or bpm < (average_bpm - 20):
                         self.client.publish("Team28/HRWarning",("Abnormal HeartRate Detected " + "\n" + str(datetime.now())))
@@ -96,7 +96,7 @@ class HRThread(threading.Thread):
                         self.client.publish("Team28/HRWarning",(""))
                 self.client.publish("Team28/SPO2Value", spo2)
                 self.q.put_nowait(spo2)
-                out_file_spo2.write(str(spo2))
+                out_file_spo2.write(str(spo2) + "\n")
                 if spo2 < 90:
                     self.client.publish("Team28/SPO2Warning",("Abnormal SPO2 Levels Detected " + "\n" + str(datetime.now())))
                     if buzz.is_active == False:
