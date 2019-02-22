@@ -1,7 +1,6 @@
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import 'globals.dart' as globals;
 
 
 final MqttClient client = MqttClient('130.113.129.17', '');

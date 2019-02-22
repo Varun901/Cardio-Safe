@@ -17,19 +17,24 @@ from datetime import datetime
    # def __init__(self,
 
 class TempThread(threading.Thread):
-    def __init__(self, queue,client):
+    def __init__(self, queue, mutex, client):
         self.q = queue
         self.client = client
+        self.mutex = mutex
         super().__init__()
     def run(self):
+        self.mutex.acquire()
         ADC.setup(0x48)
+        self.mutex.release()
         buzz = Buzzer(17)
         while True:
             out_file = open('TempOutput.txt', "a+")
             mean_value = []
 
             for i in range(20):
+                self.mutex.acquire()
                 analogVal = ADC.read(0)
+                self.mutex.release()
                 Vr = 5 * float(analogVal) / 255
                 Rt = 10000 * Vr / (5 - Vr)
                 temp = 1 / (((math.log(Rt / 10000)) / 3950) + (1 / (273.15 + 25)))
@@ -65,16 +70,21 @@ class TempThread(threading.Thread):
 
             
 class HRThread(threading.Thread):
-    def __init__(self, queue,client):
+    def __init__(self, queue, mutex, client):
         self.q = queue
         self.client = client
+        self.mutex = mutex
         super().__init__()
     def run(self):
+        self.mutex.acquire()
         hr = MAX30100()
-        buzz = Buzzer(3)
+        self.mutex.release()
+        buzz = Buzzer(18)
         count = 0
         while True:
+            self.mutex.acquire()
             hr.update()
+            self.mutex.release()
             bpm = hr.get_bpm()
             average_bpm = hr.get_avg_bpm()
             spo2 = hr.calculate_spo2()
