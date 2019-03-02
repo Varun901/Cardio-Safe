@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
 
+
 final MqttClient client = MqttClient('130.113.129.17', '');
 Future<void> main() async {
   client.logging(on: true);
@@ -118,7 +119,7 @@ class SensorInfoState extends State<SensorInfo> {
               new GridTile(child: new Card(
                   color: Colors.blue.shade200,
                   child: new Center(
-                    child: new Text("Temperature Sensor"),
+                    child: new Text("Temperature Sensor (Degrees Celsius)"),
                   ),
                   margin: EdgeInsets.all(0.0)
               ),) ,
@@ -139,7 +140,7 @@ class SensorInfoState extends State<SensorInfo> {
               new GridTile(child: new Card(
                   color: Colors.blue.shade200,
                   child: new Center(
-                    child: new Text("Heart Rate Sensor"),
+                    child: new Text("Heart Rate Sensor (BPM)"),
                   ),
                   margin: EdgeInsets.all(0.0)
               ),),
@@ -160,7 +161,7 @@ class SensorInfoState extends State<SensorInfo> {
               new GridTile(child: new Card(
                   color: Colors.blue.shade200,
                   child: new Center(
-                    child: new Text("SPO2 Sensor"),
+                    child: new Text("SPO2 Sensor (%)"),
                   ),
                   margin: EdgeInsets.all(0.0)
               ),),

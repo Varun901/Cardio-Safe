@@ -24,6 +24,8 @@ from twilio.rest import Client
 
 account_sid = 'AC2c008b8897bef75cf5d5836b123fec35'
 auth_token = '16089c09f19b02be04b94deab3781a29'
+# Insert phone number here for text messages when warning is detected
+phone_number = "+16475460022"
 twilio_client = Client(account_sid, auth_token)
 
 # This class reads and calculates temperature values from the Thermistor
@@ -93,7 +95,7 @@ class TempThread(threading.Thread):
                     .create(
                         body='High Temperature WARNING',
                         from_='+15878020288',
-                        to='+16475460022'
+                        to=phone_number
                     )
                 print(message.sid)
                 # insert name of function that reads data from sensor
@@ -108,7 +110,7 @@ class TempThread(threading.Thread):
                     .create(
                         body='Low Temperature WARNING',
                         from_='+15878020288',
-                        to='+16475460022'
+                        to=phone_number
                     )
                 print(message.sid)
                 # The next line closes the outfile
@@ -167,7 +169,7 @@ class HRThread(threading.Thread):
                             .create(
                                 body='Heart Rate WARNING',
                                 from_='+15878020288',
-                                to='+16475460022'
+                                to=phone_number
                             )
                         print(message.sid)
                         # The following code is to ensure that if the buzzer is already on,it stay on and if off it turns on
@@ -191,7 +193,7 @@ class HRThread(threading.Thread):
                         .create(
                             body='SPO2 WARNING',
                             from_='+15878020288',
-                            to='+16475460022'
+                            to=phone_number
                         )
                     print(message.sid)
                     # The following code is to ensure that if the buzzer is already on,it stay on and if off it turns on
