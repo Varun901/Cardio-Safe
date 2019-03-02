@@ -22,7 +22,9 @@ After installing the flutter plugin, open the project on Android Studio / XCode 
 
 To run the Flutter App from an Android phone, follow the following link to the Google Play Store:
 
-REMEMBER TO START THE SERVER FROM THE RASPBERRY PI BEFORE OPENING THE APP OR RUNNING THE EMULATOR
+REMEMBER TO START THE SERVER(server.py) FROM THE RASPBERRY PI BEFORE OPENING THE APP OR RUNNING THE EMULATOR
+
+MAKE SURE IT IS IN THE SAME FOLDER AS sensor_file.py
 
 For Breadboard information, check out the following image:
 ![picture](DP-3_bb.png)

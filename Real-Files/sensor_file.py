@@ -22,10 +22,10 @@ from twilio.rest import Client
 #class temp _user(object):
    # def __init__(self,
 
-account_sid = 'AC2c008b8897bef75cf5d5836b123fec35'
-auth_token = '16089c09f19b02be04b94deab3781a29'
+account_sid = 'INSERT ACCOUNT SID HERE'
+auth_token = 'INSERT AUTH TOKEN HERE'
 # Insert phone number here for text messages when warning is detected
-phone_number = "+16475460022"
+phone_number = "+INSERT PHONE NUMBER HERE"
 twilio_client = Client(account_sid, auth_token)
 
 # This class reads and calculates temperature values from the Thermistor

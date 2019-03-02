@@ -22,8 +22,8 @@ from twilio.rest import Client
 #class temp _user(object):
    # def __init__(self,
 
-account_sid = 'AC2c008b8897bef75cf5d5836b123fec35'
-auth_token = '16089c09f19b02be04b94deab3781a29'
+account_sid = 'INSERT ACCOUNT SID HERE'
+auth_token = 'INSERT AUTH TOKEN HERE'
 twilio_client = Client(account_sid, auth_token)
 
 # This class reads and calculates temperature values from the Thermistor
@@ -93,8 +93,8 @@ class TempThread(threading.Thread):
                     .create(
                         body='High Temperature WARNING',
                         from_='+15878020288',
-                        to='+16475460022'
-                    )
+                        to="+INSERT PHONE NUMBER HERE"
+                )
                 print(message.sid)
                 # insert name of function that reads data from sensor
             else:
@@ -108,8 +108,8 @@ class TempThread(threading.Thread):
                     .create(
                         body='Low Temperature WARNING',
                         from_='+15878020288',
-                        to='+16475460022'
-                    )
+                        to="+INSERT PHONE NUMBER HERE"
+                )
                 print(message.sid)
                 # The next line closes the outfile
             out_file.close()
@@ -167,7 +167,7 @@ class HRThread(threading.Thread):
                             .create(
                                 body='Heart Rate WARNING',
                                 from_='+15878020288',
-                                to='+16475460022'
+                                to="+INSERT PHONE NUMBER HERE"
                             )
                         print(message.sid)
                         # The following code is to ensure that if the buzzer is already on,it stay on and if off it turns on
@@ -191,8 +191,8 @@ class HRThread(threading.Thread):
                         .create(
                             body='SPO2 WARNING',
                             from_='+15878020288',
-                            to='+16475460022'
-                        )
+                            to="+INSERT PHONE NUMBER HERE"
+                    )
                     print(message.sid)
                     # The following code is to ensure that if the buzzer is already on,it stay on and if off it turns on
                     if buzz.is_active == False:
