@@ -222,20 +222,3 @@ b.start()
 while True: pass
 '''
     
-    
-"""
-# Your Account Sid and Auth Token from twilio.com/console
-account_sid = 'AC2c008b8897bef75cf5d5836b123fec35'
-auth_token = '16089c09f19b02be04b94deab3781a29'
-client = Client(account_sid, auth_token)
-
-message = client.messages \
-    .create(
-         body='WARNING',
-         from_='+15878020288',
-         to='+16475460022'
-     )
-
-print(message.sid)
-
-"""
